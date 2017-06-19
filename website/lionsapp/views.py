@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .search import *
 from django.views.generic import CreateView, UpdateView
 from .models import Habbit, HabbitCheckIn
-from .forms import ResourceForm
+from .forms import HabbitForm
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
@@ -15,6 +15,7 @@ from django.contrib.postgres.search import SearchVector
 from django.contrib.postgres.search import TrigramSimilarity
 from django.urls import reverse
 from datetime import datetime
+from django.forms import Textarea
 
 @login_required
 def index(request):
@@ -27,10 +28,13 @@ def index(request):
         if len(checkins) > 0:
             print('found check in')
             h.is_done = True
-            h.last_done = checkins[0].check_in_date
+            a = checkins[0].check_in_date.date()
+            b = datetime.today().date()
+            delta = (b - a).days
+            h.good_days = abs( delta )
         else:
             h.is_done = False
-            h.last_done = ""
+            h.good_days = 0
 
     context = {
         'good_habbits': good_habbits
@@ -49,8 +53,8 @@ def checkin(request, id):
 class HabbitCreate(CreateView):
     model = Habbit
     template_name  ="new_habbit_form.html"
-    fields = ['name', 'image']
-
+    # fields = ['name', 'image', 'description']
+    form_class = HabbitForm
     def form_valid(self, form):
         object = form.save(commit=False)
         object.user = self.request.user
@@ -58,8 +62,4 @@ class HabbitCreate(CreateView):
         object.save()
         return super(HabbitCreate, self).form_valid(form)
     def get_success_url(self):
-        # form_class = self.get_form_class()
-        # form = self.get_form(form_class)
-        # form.full_clean()
-        # return "/?q=" + form.cleaned_data['name']
         return "/"

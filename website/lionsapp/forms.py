@@ -3,10 +3,12 @@ from django.forms import ModelForm, SelectDateWidget, EmailInput,NumberInput,Sel
 from .models import Habbit
 import datetime
 
-class ResourceForm(forms.ModelForm):
+from django import forms
+
+class HabbitForm(forms.ModelForm):
     class Meta:
         model = Habbit
-        exclude = []
+        fields = ['name', 'image', 'description']
         widgets = {
-            'Value': Textarea(attrs={'cols': 80, 'rows': 20}),
+            'description': forms.Textarea()
         }
