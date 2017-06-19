@@ -1,0 +1,25 @@
+{% load static %}
+
+<head>
+	<meta charset="UTF-8">
+  <script src="http://malsup.github.com/jquery.form.js"></script>
+</head>
+<form method="post" enctype="multipart/form-data" id="contact"
+class="form" action="new" id="new-habbit-form">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+		</button>
+	</div>
+	<div class="modal-body">
+	    <h3>something to remember ?</h3>
+	    {% csrf_token %}
+	    {{ form.as_p }}
+	    <input type="submit" value="Submit" />
+	</div>
+</form>
+
+<script>
+	console.log({{form}});
+	var form_options = { target: '#modal-new', success: function() { } }
+	$('#new-habbit-form').ajaxForm(form_options);
+</script>

@@ -1,0 +1,40 @@
+{% extends "registration/base.html" %}
+
+{% load static %}
+
+
+
+{% block title %}Log in{% endblock %}
+
+
+
+
+{% block content %}
+
+{% if form.errors %}
+<p class="error">Please correct the errors below:</p>
+{% endif %}
+
+<div class="loginmodal-container">
+
+  <image src="{% static "images/logo.png" %}" width="200px" />
+
+  <h1>Login to Your Account</h1><br>
+  <form method="post" action="?next={{ next|default:"/" }}">{% csrf_token %}
+      {% if form.username.errors %} <span class="error">{{ form.username.errors|join:", " }}</span>{% endif %}
+      {{ form.username }}
+      {% if form.password.errors %} <span class="error">{{ form.password.errors|join:", " }}</span>{% endif %}
+      {{ form.password }}
+      <input type="submit" value="Log in" class="login loginmodal-submit" />
+  </form>
+  <div class="login-help">
+					<a href="/accounts/register">Register</a> - <a href="#">Forgot Password</a>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block content-related %}
+<p>If you don't have an account, you can <a href="/accounts/register/">sign
+up</a> for one.
+{% endblock %}

@@ -1,0 +1,139 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Lions</title>
+  <link rel="shortcut icon" href="{% static "images/favicon.ico" %}" type="image/x-icon">
+  <link rel="icon" href="{% static "images/favicon.ico" %}" type="image/x-icon">
+
+  <!-- Bootstrap Core CSS -->
+  <link href="{% static "/vendor/bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
+
+  <!-- Theme CSS -->
+  <link href="{% static "css/main.css" %}" rel="stylesheet">
+  <link href="{% static "css/avacat.css" %}" rel="stylesheet">
+  <link href="{% static "css/habbit-form.css" %}" rel="stylesheet">
+
+
+  <script src="{% static "vendor/jquery/jquery.min.js" %}"></script>
+  <script src="{% static "vendor/jquery/jquery.tmpl.min.js" %}"></script>
+  <script src="{% static "js/checkin.js" %}"></script>
+</head>
+
+<body id="page-top" class="index">
+
+  <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom">
+    <div class="container">
+      <div class="navbar-header page-scroll">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                </button>
+        <a class="navbar-brand" href="#page-top">
+                  <img style="margin-top:-20px" src="{% static "images/favicon.png" %}">
+                </a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li class="hidden">
+            <a href="#page-top"></a>
+          </li>
+
+          <li class="page-scroll">
+
+          </li>
+
+          <li class="page-scroll dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome, {{ user.get_username }} <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li class="page-scroll"><a href="/accounts/logout" style="color:black"> <i class="icon-off"></i> Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+  <div class="modal fade" id="modal-new" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      </div>
+    </div>
+  </div>
+
+  <div id="wrapper">
+    <div class="container">
+        <div class="row">
+        {% for h in good_habbits %}
+          <div class="col-md-3">
+                <div class="circle c4 img-circle">
+                    <h4 class="red">{{h.name }}</h4>
+                    <img src={{h.image.url}} width="100px" />
+                    <p>{{h.last_done}}</p>
+                    <div class="checkbox">
+                        <label><input type="checkbox" value="">Option 1</label>
+                    </div>
+                    <!-- <button type="button" class="btn btn-danger">Choose</button> -->
+                </div>
+            </div>
+        {% empty %}
+  			   <li>No good habbits yet.</li>
+  			{% endfor %}
+        <div class="col-md-3">
+              <div class="circle c4 img-circle" style="display:table-cell; vertical-align:middle;">
+                  <button type="button" class="btn btn-danger" >Create a new Habbit</button>
+                  <a  data-toggle="modal" href="new" class="add-resource action"
+            				data-target="#modal-new" title="new item" data-tooltip>
+            				<button class="fa fa-plus ">
+            				<label>New</label>
+            				</button>
+            			</a>
+              </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <hr>
+
+  </div>
+
+  <script src="{% static "js/require.js" %}"></script>
+  <script src="{% static "js/search.js" %}"></script>
+  <script>
+    $("input[type=checkbox]").change(function(){
+      if ($(this).prop("checked"))
+      {
+        var id =  $(this).prop("id");
+        var key = id.split('-')[1]
+        console.log(key);
+        checkin(key);
+      }
+    });
+	</script>
+  <script src="{% static "vendor/bootstrap/js/bootstrap.min.js" %}"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+
+    <!-- Contact Form JavaScript -->
+    <script src="{% static "js/jqBootstrapValidation.js" %}"></script>
+
+    <script src="{% static "js/elasticsearch.jquery.min.js" %}"></script>
+		<script src="{% static "js/elasticsearch.min.js" %}"></script>
+    <script src="{% static "js/search.js" %}"></script>
+
+    <script src="{% static "js/require.js" %}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.miamicoder.bookit" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Lions</name>
+    <description>
+        I quit ... I am a lion
+    </description>
+    <author email="miamicoder@gmail.com" href="http://miamicoder.com">
+        Abdelrahman Elbarbary ... Abdelrahman.elbarbary@gmail.com
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+
+    <preference name="StatusBarOverlaysWebView" value="false"></preference>
+    <preference name="StatusBarBackgroundColor" value="#662d91"></preference>
+</widget>
