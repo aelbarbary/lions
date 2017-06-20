@@ -29,7 +29,7 @@
   <script src="https://use.fontawesome.com/079cc40338.js"></script>
   <script src="{% static "vendor/jquery/jquery.min.js" %}"></script>
   <script src="{% static "vendor/jquery/jquery.tmpl.min.js" %}"></script>
-  <script src="{% static "js/checkin.js" %}"></script>
+  <script src="{% static "js/habbits-manager.js" %}"></script>
   <script src="{% static "js/modernizr.custom.js" %}"></script>
 </head>
 
@@ -75,47 +75,60 @@
     </div>
   </div>
 
-  <div id="wrapper">
-    <div class="container">
-        <div class="row">
-        <h1 style="text-align:center">I AM</h1>
-        {% for h in good_habbits %}
-          <div class="col-md-3">
-                <div class="circle c4 img-circle">
-                    <h4 class="{% if h.is_done %} done {%else%} notdone {% endif %}" >{{h.name }}</h4>
-                    <div class="crop" >
-                      <img data-toggle="myToolTip"  data-placement="top" data-html="true" data-original-title="{{h.description}}" src={{h.image.url}} width="100px" />
-                    </div>
-                    <p style="margin:10px;">for {{h.good_days}} days</p>
-
-                    <button class="cbutton cbutton--effect-ivana">
-                      <i id="goodhabbitdone-{{h.id}}" class="cbutton__icon fa fa-check" aria-hidden="true" style="font-size:3em; margin-top: 0px;"></i>
-                    </button>
-                    <!-- <button type="button" class="btn btn-danger">Choose</button> -->
+  <div class="jumbotron">
+    <h1 style="text-align:center; font-size:100px;">I Am</h1>
+    <div class="row">
+    {% for h in good_habbits %}
+      <div class="col-sm-2">
+            <a href="#" class="close-thik" id="close-{{h.id}}"></a>
+            <div class="circle c4 img-circle">
+                <h4>{{h.name }}</h4>
+                <div class="crop" >
+                  <img data-toggle="myToolTip"  data-placement="top" data-html="true" data-original-title="{{h.description}}" src={{h.image.url}} width="100px" />
                 </div>
+                <p style="margin:10px;">for {{h.good_days}} days</p>
+
+                <button class="cbutton cbutton--effect-ivana" style="border-color: #ffff00">
+                  <i id="goodhabbitdone-{{h.id}}" class="cbutton__icon fa fa-check {% if h.is_done %} done {%else%} notdone {% endif %}" aria-hidden="true" ></i>
+                </button>
+                <!-- <button type="button" class="btn btn-danger">Choose</button> -->
             </div>
-  			{% endfor %}
-        <div class="col-md-3">
-              <div class="circle c4 img-circle" style="display:table-cell; vertical-align:middle;">
-                  <a  data-toggle="modal" href="new" class="add-resource action"
-            				data-target="#modal-new" title="new item" data-tooltip>
-            				<button type="button" class="btn btn-danger" >Create a new Habbit</button>
-            			</a>
-              </div>
         </div>
-      </div>
+		{% endfor %}
+    {%if not good_habbits or good_habbits|length < 5%}
+      <div class="col-sm-2">
+          <div class="circle c4 img-circle">
+              <a  data-toggle="modal" href="new" class="add-resource action"
+        				data-target="#modal-new" title="new item" data-tooltip>
+        				<button type="button" class="btn btn-danger" >Create a new Habbit</button>
+        			</a>
+          </div>
+    </div>
+    {%endif%}
     </div>
   </div>
-    <hr>
-  </div>
-
 
   <script>
     $(".fa-check").click(function(){
         var id =  $(this).prop("id");
         var key = id.split('-')[1]
+        console.log(id);
+        if ($(this).hasClass("done")){
+            console.log("undo");
+            undo_checkin(key);
+        }
+        else {
+          console.log("checkin");
+          checkin(key);
+        }
         console.log(key);
-        checkin(key);
+    });
+
+    $(".close-thik").click(function(){
+        var id =  $(this).prop("id");
+        var key = id.split('-')[1]
+        console.log("deleteing:" + key);
+        delete_habbit(key);
     });
 	</script>
   <script src="{% static "vendor/bootstrap/js/bootstrap.min.js" %}"></script>
@@ -172,6 +185,11 @@
       $(document).ready(function(){
           $('[data-toggle="myToolTip"]').tooltip();
        });
+
+       vpw = $(window).width();
+       vph = $(window).height()-110;
+
+       $('.full-page').height(vph);
 		</script>
 </body>
 

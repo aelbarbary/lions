@@ -6,12 +6,51 @@ function checkin(id) {
       datatype: 'json',
       success : function(check_in_date) {
         console.log(check_in_date);
+        $("#goodhabbitdone-"+id).toggleClass("done");
+        $("#goodhabbitdone-"+id).toggleClass("notdone");
+
+      },
+      error : function(xhr,errmsg,err) {
+
+          console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+      }
+  });
+};
+
+function undo_checkin(id) {
+  event.preventDefault();
+  $.ajax({
+      url : "undocheckin/" + id,
+      type : "GET",
+      datatype: 'json',
+      success : function(check_in_date) {
+        $("#goodhabbitdone-"+id).toggleClass("done");
+        $("#goodhabbitdone-"+id).toggleClass("notdone");
+      },
+      error : function(xhr,errmsg,err) {
+
+          console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+      }
+  });
+};
+
+function delete_habbit(id) {
+  event.preventDefault();
+  $.ajax({
+      url : "delete/" + id,
+      type : "GET",
+      datatype: 'json',
+      success : function(response) {
+        location.reload();
+        console.log(response);
       },
       error : function(xhr,errmsg,err) {
           console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
       }
   });
 };
+
+
 
 $(function() {
     // This function gets cookie with a given name

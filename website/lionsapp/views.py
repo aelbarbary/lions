@@ -50,6 +50,14 @@ def checkin(request, id):
 
     return HttpResponse(checkin.check_in_date)
 
+def undo_checkin(request, id):
+    print(datetime.today())
+    print("id" + str(id))
+    print(datetime.today().date())
+    HabbitCheckIn.objects.filter(check_in_date__gte=datetime.today().date(), habbit_id = id).delete()
+
+    return HttpResponse()
+
 class HabbitCreate(CreateView):
     model = Habbit
     template_name  ="new_habbit_form.html"
@@ -63,3 +71,8 @@ class HabbitCreate(CreateView):
         return super(HabbitCreate, self).form_valid(form)
     def get_success_url(self):
         return "/"
+
+def delete_habbit(request, id):
+    print("id" + str(id))
+    Habbit.objects.filter(id = id).delete()
+    return HttpResponse("Ok")
