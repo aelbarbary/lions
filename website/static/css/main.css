@@ -20,7 +20,6 @@ body {
 .container{
 	width: 100%;
 }
-.row{}
 .circle{
   background: #ffffff;
   padding: 35px;
@@ -143,6 +142,7 @@ div#page-2 {background-color:#4e4e4e;}
 
 .row{
 	text-align: center;
+	padding: 20px;
 }
 .col-sm-2{
 	width: 18%;
@@ -150,17 +150,20 @@ div#page-2 {background-color:#4e4e4e;}
 }
 
 .img-circle{
-	border-radius: 30%;
+	border-top-left-radius: 0%;
+	border-top-right-radius: 30%;
+	border-bottom-left-radius: 30%;
+	border-bottom-right-radius: 30%;
 }
 
 [class*='close-'] {
   color: #777;
   font: 14px/100% arial, sans-serif;
   position: absolute;
-  right: 30px;
+  left: 30px;
   text-decoration: none;
   text-shadow: 0 1px 0 #fff;
-  top: 30px;
+  top: 20px;
 }
 
 .close-classic:after {
