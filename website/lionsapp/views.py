@@ -25,16 +25,17 @@ def index(request):
 
     for h in good_habbits:
         checkins = HabbitCheckIn.objects.filter( habbit_id= h.id).order_by('-check_in_date')[:1]
+        h.is_done_today = False
+        # h.good_days = 0
         if len(checkins) > 0:
-            print('found check in')
-            h.is_done = True
-            a = checkins[0].check_in_date.date()
-            b = datetime.today().date()
-            delta = (b - a).days
-            h.good_days = abs( delta )
-        else:
-            h.is_done = False
-            h.good_days = 0
+            # print(checkins[0].check_in_date.date() )
+            # print(datetime.today().date())
+            if checkins[0].check_in_date.date() == datetime.today().date():
+                print("equals")
+                h.is_done_today = True
+            # last_checkin_date = checkins[0].check_in_date.date()
+            # today = datetime.today().date()
+            # h.good_days = abs( (today - last_checkin_date).days )
 
     context = {
         'good_habbits': good_habbits
@@ -42,9 +43,14 @@ def index(request):
     return render(request, 'index.html', context)
 
 def checkin(request, id):
+
     checkin = HabbitCheckIn(habbit_id = id)
     try:
         checkin.save()
+        habbit = Habbit.objects.get(pk=id)
+        habbit.good_for = habbit.good_for + 1
+        habbit.save()
+        return HttpResponse(habbit.good_for)
     except Exception as e:
          print(str(e))
 
@@ -55,12 +61,14 @@ def undo_checkin(request, id):
     print("id" + str(id))
     print(datetime.today().date())
     HabbitCheckIn.objects.filter(check_in_date__gte=datetime.today().date(), habbit_id = id).delete()
-
-    return HttpResponse()
+    habbit = Habbit.objects.get(pk=id)
+    habbit.good_for = habbit.good_for - 1
+    habbit.save()
+    return HttpResponse(habbit.good_for)
 
 class HabbitCreate(CreateView):
     model = Habbit
-    template_name  ="new_habbit_form.html"
+    template_name  ="habbit_form.html"
     # fields = ['name', 'image', 'description']
     form_class = HabbitForm
     def form_valid(self, form):

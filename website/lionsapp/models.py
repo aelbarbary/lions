@@ -6,6 +6,8 @@ class Habbit(models.Model):
    name = models.CharField(max_length=2000)
    description = models.CharField(max_length=8000)
    is_good = models.BooleanField(default=False)
+   good_for = models.IntegerField(default=0)
+   super_for = models.IntegerField(default=0)
    user = models.ForeignKey(User)
    image = models.ImageField(upload_to = "images", default = 'images/good_habbit.png')
 

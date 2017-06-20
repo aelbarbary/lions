@@ -22,7 +22,7 @@ body {
 }
 .circle{
   background: #ffffff;
-  padding: 35px;
+  padding: 20px;
   text-align: center;
   height: 250px;
   width: 250px;
@@ -98,20 +98,21 @@ body {
 }
 
 .fa-check:hover{
-	color: yellow;
+	color: white;
 }
 
 .crop {
-    width: 80px;
-    height: 80px;
+    width: 90px;
+    height: 90px;;
     overflow: hidden;
 		text-align: center;
 		margin: 0 auto;
 }
 
 .crop img {
-    width: 80px;
-    height: 80px;
+    width: 90px;
+    height: 90px;
+		padding: 10px;
 }
 
 .fa-check

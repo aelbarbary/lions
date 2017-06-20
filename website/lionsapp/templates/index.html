@@ -86,10 +86,10 @@
                 <div class="crop" >
                   <img data-toggle="myToolTip"  data-placement="top" data-html="true" data-original-title="{{h.description}}" src={{h.image.url}} width="100px" />
                 </div>
-                <p style="margin:10px;">for {{h.good_days}} days</p>
+                <p id="goodfor-{{h.id}}" style="margin:10px;">for {{h.good_for}} days</p>
 
                 <button class="cbutton cbutton--effect-ivana" style="border-color: #ffff00">
-                  <i id="goodhabbitdone-{{h.id}}" class="cbutton__icon fa fa-check {% if h.is_done %} done {%else%} notdone {% endif %}" aria-hidden="true" ></i>
+                  <i id="goodhabbitdone-{{h.id}}" class="cbutton__icon fa fa-check {% if h.is_done_today %} done {%else%} notdone {% endif %}" aria-hidden="true" ></i>
                 </button>
                 <!-- <button type="button" class="btn btn-danger">Choose</button> -->
             </div>

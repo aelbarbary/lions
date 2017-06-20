@@ -4,11 +4,11 @@ function checkin(id) {
       url : "checkin/" + id,
       type : "GET",
       datatype: 'json',
-      success : function(check_in_date) {
-        console.log(check_in_date);
+      success : function(good_for) {
+        console.log(good_for);
         $("#goodhabbitdone-"+id).toggleClass("done");
         $("#goodhabbitdone-"+id).toggleClass("notdone");
-
+        $("#goodfor-" + id).text("for " + good_for + " days")
       },
       error : function(xhr,errmsg,err) {
 
@@ -23,9 +23,10 @@ function undo_checkin(id) {
       url : "undocheckin/" + id,
       type : "GET",
       datatype: 'json',
-      success : function(check_in_date) {
+      success : function(good_for) {
         $("#goodhabbitdone-"+id).toggleClass("done");
         $("#goodhabbitdone-"+id).toggleClass("notdone");
+        $("#goodfor-" + id).text("for " + good_for + " days")
       },
       error : function(xhr,errmsg,err) {
 
