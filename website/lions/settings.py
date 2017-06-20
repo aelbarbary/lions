@@ -87,12 +87,9 @@ DATABASES = {
      'default': {
          'ENGINE': 'django.db.backends.postgresql',
          'NAME': 'lions',
-         'HOST': 'localhost',
-        #  os.environ['AVACAT_DB_HOST'],
-         'USER': 'postgres',
-        #  os.environ['AVACAT_DB_USER'],
-         'PASSWORD': 'passw0rd'
-        #  os.environ['AVACAT_DB_PASSWORD']
+         'HOST': os.environ['LIONS_DB_HOST'],
+         'USER': os.environ['LIONS_DB_USER'],
+         'PASSWORD': os.environ['LIONS_DB_PASSWORD']
      }
  }
 
