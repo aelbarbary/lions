@@ -9,6 +9,9 @@ class GoodTrait(models.Model):
    user = models.ForeignKey(User)
    image = models.ImageField(upload_to = "images", default = 'images/good_trait_default.png')
 
+   def __str__ (self):
+        return self.name
+
    def calc_good_for(self):
        checkins = GoodTraitCheckIn.objects.filter(good_trait_id=self.id).order_by('-date')
        if not checkins:
