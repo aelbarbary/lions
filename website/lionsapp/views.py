@@ -26,19 +26,21 @@ def index(request):
     for h in good_habbits:
         checkins = HabbitCheckIn.objects.filter( habbit_id= h.id).order_by('-check_in_date')[:1]
         h.is_done_today = False
-        # h.good_days = 0
         if len(checkins) > 0:
-            # print(checkins[0].check_in_date.date() )
-            # print(datetime.today().date())
             if checkins[0].check_in_date.date() == datetime.today().date():
                 print("equals")
                 h.is_done_today = True
-            # last_checkin_date = checkins[0].check_in_date.date()
-            # today = datetime.today().date()
-            # h.good_days = abs( (today - last_checkin_date).days )
-
+    for h in bad_habbits:
+         checkins = HabbitCheckIn.objects.filter( habbit_id= h.id).order_by('-check_in_date')[:1]
+         h.is_done_today = False
+         if len(checkins) > 0:
+             if checkins[0].check_in_date.date() == datetime.today().date():
+                 print("equals")
+                 h.is_done_today = True
     context = {
-        'good_habbits': good_habbits
+        'good_habbits': good_habbits,
+        'bad_habbits': bad_habbits,
+
     }
     return render(request, 'index.html', context)
 
@@ -72,9 +74,14 @@ class HabbitCreate(CreateView):
     # fields = ['name', 'image', 'description']
     form_class = HabbitForm
     def form_valid(self, form):
+
         object = form.save(commit=False)
         object.user = self.request.user
-        object.is_good = True
+        type = self.request.GET.get('type')
+        if type == 'good':
+            object.is_good = True
+        else:
+            object.is_good = False
         object.save()
         return super(HabbitCreate, self).form_valid(form)
     def get_success_url(self):

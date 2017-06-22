@@ -6,8 +6,8 @@ function checkin(id) {
       datatype: 'json',
       success : function(good_for) {
         console.log(good_for);
-        $("#goodhabbitdone-"+id).toggleClass("done");
-        $("#goodhabbitdone-"+id).toggleClass("notdone");
+        $("#habbitdone-"+id).toggleClass("done");
+        $("#habbitdone-"+id).toggleClass("notdone");
         $("#goodfor-" + id).text("for " + good_for + " days")
       },
       error : function(xhr,errmsg,err) {
@@ -24,8 +24,8 @@ function undo_checkin(id) {
       type : "GET",
       datatype: 'json',
       success : function(good_for) {
-        $("#goodhabbitdone-"+id).toggleClass("done");
-        $("#goodhabbitdone-"+id).toggleClass("notdone");
+        $("#habbitdone-"+id).toggleClass("done");
+        $("#habbitdone-"+id).toggleClass("notdone");
         $("#goodfor-" + id).text("for " + good_for + " days")
       },
       error : function(xhr,errmsg,err) {

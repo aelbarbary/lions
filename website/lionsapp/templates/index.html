@@ -25,8 +25,9 @@
   <link href="{% static "css/habbit-form.css" %}" rel="stylesheet">
 
   <!-- Custom Fonts -->
-  <!-- <link href="{% static "vendor/font-awesome/css/font-awesome.min.css" %}" rel="stylesheet" type="text/css"> -->
-  <script src="https://use.fontawesome.com/079cc40338.js"></script>
+  <link href="{% static "vendor/font-awesome/css/font-awesome.min.css" %}" rel="stylesheet" type="text/css">
+  <!-- <script src="https://use.fontawesome.com/079cc40338.js"></script> -->
+
   <script src="{% static "vendor/jquery/jquery.min.js" %}"></script>
   <script src="{% static "vendor/jquery/jquery.tmpl.min.js" %}"></script>
   <script src="{% static "js/habbits-manager.js" %}"></script>
@@ -41,8 +42,14 @@
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                 </button>
-        <a class="navbar-brand" href="#page-top">
+        <!-- <a class="navbar-brand" href="#page-top">
                   <img style="margin-top:-20px" src="{% static "images/favicon.png" %}">
+                </a> -->
+                <!-- <a class="navbar-brand" href="#page-top">LIONS</a> -->
+
+                <a class="navbar-brand" href="#page-top">
+                  <img  src="{% static "images/logo.png" %}" style="width:50px;" />
+                  LIONS
                 </a>
       </div>
 
@@ -76,7 +83,7 @@
   </div>
 
   <div class="jumbotron">
-    <h1 style="text-align:center; font-size:100px;">I Am</h1>
+    <h1 style="text-align:center; font-size:100px;">I AM</h1>
     <div class="row">
     {% for h in good_habbits %}
       <div class="col-sm-2">
@@ -89,7 +96,7 @@
                 <p id="goodfor-{{h.id}}" style="margin:10px;">for {{h.good_for}} days</p>
 
                 <button class="cbutton cbutton--effect-ivana" style="border-color: #ffff00">
-                  <i id="goodhabbitdone-{{h.id}}" class="cbutton__icon fa fa-check {% if h.is_done_today %} done {%else%} notdone {% endif %}" aria-hidden="true" ></i>
+                  <i id="habbitdone-{{h.id}}" class="cbutton__icon fa fa-check fa-3x action {% if h.is_done_today %} done {%else%} notdone {% endif %}" aria-hidden="true" ></i>
                 </button>
                 <!-- <button type="button" class="btn btn-danger">Choose</button> -->
             </div>
@@ -98,9 +105,42 @@
     {%if not good_habbits or good_habbits|length < 5%}
       <div class="col-sm-2">
           <div class="circle c4 img-circle">
-              <a  data-toggle="modal" href="new" class="add-resource action"
+              <a  data-toggle="modal" href="new?type=good" class="add-resource action"
         				data-target="#modal-new" title="new item" data-tooltip>
-        				<button type="button" class="btn btn-danger" >Create a new Habbit</button>
+        				<button type="button" class="btn btn-danger" >Enter a good Habbit</button>
+        			</a>
+          </div>
+    </div>
+    {%endif%}
+    </div>
+  </div>
+
+  <div class="jumbotron">
+    <h1 style="text-align:center; font-size:100px;">I AM NOT</h1>
+    <div class="row">
+    {% for h in bad_habbits %}
+      <div class="col-sm-2">
+            <a href="#" class="close-thik" id="close-{{h.id}}"></a>
+            <div class="circle c4 img-circle">
+                <h4>{{h.name }}</h4>
+                <div class="crop" >
+                  <img data-toggle="myToolTip"  data-placement="top" data-html="true" data-original-title="{{h.description}}" src={{h.image.url}} width="100px" />
+                </div>
+                <p id="goodfor-{{h.id}}" style="margin:10px;">for {{h.good_for}} days</p>
+
+                <button class="cbutton cbutton--effect-ivana" style="border-color: #ffff00">
+                  <i id="habbitdone-{{h.id}}" class="cbutton__icon fa fa-thumbs-down action fa-3x{% if h.is_done_today %} done {%else%} notdone {% endif %}" aria-hidden="true" ></i>
+                </button>
+                <!-- <button type="button" class="btn btn-danger">Choose</button> -->
+            </div>
+        </div>
+		{% endfor %}
+    {%if not bad_habbits or bad_habbits|length < 5%}
+      <div class="col-sm-2">
+          <div class="circle c4 img-circle">
+              <a  data-toggle="modal" href="new?type=bad" class="add-resource action"
+        				data-target="#modal-new" title="new item" data-tooltip>
+        				<button type="button" class="btn btn-danger" >Enter a bad habbit</button>
         			</a>
           </div>
     </div>
@@ -109,7 +149,7 @@
   </div>
 
   <script>
-    $(".fa-check").click(function(){
+    $(".action").click(function(){
         var id =  $(this).prop("id");
         var key = id.split('-')[1]
         console.log(id);
@@ -186,10 +226,7 @@
           $('[data-toggle="myToolTip"]').tooltip();
        });
 
-       vpw = $(window).width();
-       vph = $(window).height()-110;
 
-       $('.full-page').height(vph);
 		</script>
 </body>
 
