@@ -142,10 +142,10 @@ body {
   color: #777;
   font: 14px/100% arial, sans-serif;
   position: absolute;
-  left: 30px;
+  left: 20px;
   text-decoration: none;
   text-shadow: 0 1px 0 #fff;
-  top: 20px;
+  top: 5px;
 }
 
 .close-classic:after {
