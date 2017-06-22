@@ -1,13 +1,13 @@
 from django import forms
 from django.forms import ModelForm, SelectDateWidget, EmailInput,NumberInput,Select, Textarea, FileInput
-from .models import Habbit
+from .models import *
 import datetime
 
 from django import forms
 
-class HabbitForm(forms.ModelForm):
+class GoodTraitForm(forms.ModelForm):
     class Meta:
-        model = Habbit
+        model = GoodTrait
         fields = ['name', 'image', 'description']
         widgets = {
             'description': forms.Textarea()

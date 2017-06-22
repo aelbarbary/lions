@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from .search import *
 from django.views.generic import CreateView, UpdateView
-from .models import Habbit, HabbitCheckIn
-from .forms import HabbitForm
+from .models import *
+from .forms import *
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
@@ -14,80 +14,79 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.postgres.search import SearchVector
 from django.contrib.postgres.search import TrigramSimilarity
 from django.urls import reverse
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.forms import Textarea
 
 @login_required
 def index(request):
 
-    good_habbits = Habbit.objects.filter(user_id= request.user.id, is_good=True)
-    bad_habbits = Habbit.objects.filter(user_id= request.user.id, is_good=False)
+    good_traits = GoodTrait.objects.filter(user_id= request.user.id).order_by('name')
+    bad_traits = BadTrait.objects.filter(user_id= request.user.id).order_by('name')
 
-    for h in good_habbits:
-        checkins = HabbitCheckIn.objects.filter( habbit_id= h.id).order_by('-check_in_date')[:1]
+    for h in good_traits:
+        checkins = GoodTraitCheckIn.objects.filter( good_trait_id= h.id).order_by('-date')[:1]
         h.is_done_today = False
+        h.good_for = h.calc_good_for()
         if len(checkins) > 0:
-            if checkins[0].check_in_date.date() == datetime.today().date():
+            if checkins[0].date.date() == datetime.today().date():
                 print("equals")
                 h.is_done_today = True
-    for h in bad_habbits:
-         checkins = HabbitCheckIn.objects.filter( habbit_id= h.id).order_by('-check_in_date')[:1]
-         h.is_done_today = False
-         if len(checkins) > 0:
-             if checkins[0].check_in_date.date() == datetime.today().date():
-                 print("equals")
-                 h.is_done_today = True
+    # for h in bad_habbits:
+    #      act_out_list = HabbitCheckIn.objects.filter( bad_trait_id= h.id).order_by('-date')[:1]
+    #      h.is_done_today = False
+    #
+    #      if len(act_out_list) > 0:
+    #          last_act_out = act_out_list[0].check_in_date.date()
+    #          today = datetime.today().date()
+    #          if  last_act_out == today:
+    #              print("equals")
+    #              h.is_done_today = True
+    #          h.super_for = (today - last_act_out).days
+    #          print("super for:" + str(h.super_for))
     context = {
-        'good_habbits': good_habbits,
-        'bad_habbits': bad_habbits,
+        'good_traits': good_traits,
+        # 'bad_habbits': bad_habbits,
 
     }
     return render(request, 'index.html', context)
 
 def checkin(request, id):
+    today_checkins =  GoodTraitCheckIn.objects.filter(good_trait_id=id,  date__gte = datetime.today().date() )
+    good_for = 0
+    good_trait = GoodTrait.objects.get(pk=id)
+    if not today_checkins:
+        print("new checkin")
+        good_for = good_trait.checkin()
 
-    checkin = HabbitCheckIn(habbit_id = id)
-    try:
-        checkin.save()
-        habbit = Habbit.objects.get(pk=id)
-        habbit.good_for = habbit.good_for + 1
-        habbit.save()
-        return HttpResponse(habbit.good_for)
-    except Exception as e:
-         print(str(e))
+    else:
+        print("delete checkin")
+        good_for = good_trait.rollback_checkin()
 
-    return HttpResponse(checkin.check_in_date)
+    print("good for:" + str(good_for))
+
+    return JsonResponse({ 'goodFor': good_for })
 
 def undo_checkin(request, id):
-    print(datetime.today())
-    print("id" + str(id))
-    print(datetime.today().date())
-    HabbitCheckIn.objects.filter(check_in_date__gte=datetime.today().date(), habbit_id = id).delete()
-    habbit = Habbit.objects.get(pk=id)
-    habbit.good_for = habbit.good_for - 1
-    habbit.save()
-    return HttpResponse(habbit.good_for)
+    GoodTraitCheckIn.objects.filter(date__gte=datetime.today().date(), good_trait_id = id).delete()
+    good_trait = GoodTrait.objects.get(pk=id)
+    good_trait.good_for = good_trait.good_for - 1
+    good_trait.save()
+    return HttpResponse(good_trait.good_for)
 
-class HabbitCreate(CreateView):
-    model = Habbit
-    template_name  ="habbit_form.html"
+class GoodTraitCreate(CreateView):
+    model = GoodTrait
+    template_name  ="good_trait_form.html"
     # fields = ['name', 'image', 'description']
-    form_class = HabbitForm
+    form_class = GoodTraitForm
     def form_valid(self, form):
-
         object = form.save(commit=False)
         object.user = self.request.user
-        type = self.request.GET.get('type')
-        if type == 'good':
-            object.is_good = True
-        else:
-            object.is_good = False
         object.save()
-        return super(HabbitCreate, self).form_valid(form)
+        return super(GoodTraitCreate, self).form_valid(form)
     def get_success_url(self):
         return "/"
 
-def delete_habbit(request, id):
+def delete_good_trait(request, id):
     print("id" + str(id))
-    Habbit.objects.filter(id = id).delete()
+    GoodTrait.objects.filter(id = id).delete()
     return HttpResponse("Ok")

@@ -83,13 +83,6 @@ body {
   color: #ffffff;
 }
 
-.c4:hover{
-  background: #c2c2c2;
-  color: #ffffff;
-	border-width: 1px;
-	border-color: #474747;
-	border-style: solid;
-}
 .c4 .red{
   color: #d2322d;
 }
@@ -178,5 +171,5 @@ body {
 }
 
 .action{
-	
+
 }

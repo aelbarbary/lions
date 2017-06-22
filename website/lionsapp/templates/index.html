@@ -30,7 +30,7 @@
 
   <script src="{% static "vendor/jquery/jquery.min.js" %}"></script>
   <script src="{% static "vendor/jquery/jquery.tmpl.min.js" %}"></script>
-  <script src="{% static "js/habbits-manager.js" %}"></script>
+  <script src="{% static "js/good-trait-controller.js" %}"></script>
   <script src="{% static "js/modernizr.custom.js" %}"></script>
 </head>
 
@@ -85,62 +85,29 @@
   <div class="jumbotron">
     <h1 style="text-align:center; font-size:100px;">I AM</h1>
     <div class="row">
-    {% for h in good_habbits %}
+    {% for t in good_traits %}
       <div class="col-sm-2">
-            <a href="#" class="close-thik" id="close-{{h.id}}"></a>
+            <a href="#" class="close-thik deletegoodtrait" id="deletegoodtrait-{{t.id}}"></a>
             <div class="circle c4 img-circle">
-                <h4>{{h.name }}</h4>
+                <h4>{{t.name }}</h4>
                 <div class="crop" >
-                  <img data-toggle="myToolTip"  data-placement="top" data-html="true" data-original-title="{{h.description}}" src={{h.image.url}} width="100px" />
+                  <img data-toggle="myToolTip"  data-placement="top" data-html="true" data-original-title="{{t.description}}" src={{t.image.url}} width="100px" />
                 </div>
-                <p id="goodfor-{{h.id}}" style="margin:10px;">for {{h.good_for}} days</p>
+                <p id="goodfor-{{t.id}}" style="margin:10px;">for {{t.good_for}} days</p>
 
-                <button class="cbutton cbutton--effect-ivana" style="border-color: #ffff00">
-                  <i id="habbitdone-{{h.id}}" class="cbutton__icon fa fa-check fa-3x action {% if h.is_done_today %} done {%else%} notdone {% endif %}" aria-hidden="true" ></i>
+                <button class="cbutton cbutton--effect-ivana " style="border-color: #ffff00">
+                  <i id="goodtraitcheckin-{{t.id}}" class="cbutton__icon fa fa-check fa-3x action {% if t.is_done_today %} done {%else%} notdone {% endif %} checkin" aria-hidden="true" ></i>
                 </button>
                 <!-- <button type="button" class="btn btn-danger">Choose</button> -->
             </div>
         </div>
 		{% endfor %}
-    {%if not good_habbits or good_habbits|length < 5%}
+    {%if not good_traits or good_traits|length < 5%}
       <div class="col-sm-2">
           <div class="circle c4 img-circle">
-              <a  data-toggle="modal" href="new?type=good" class="add-resource action"
+              <a  data-toggle="modal" href="trait/good/new" class="add-resource action"
         				data-target="#modal-new" title="new item" data-tooltip>
-        				<button type="button" class="btn btn-danger" >Enter a good Habbit</button>
-        			</a>
-          </div>
-    </div>
-    {%endif%}
-    </div>
-  </div>
-
-  <div class="jumbotron">
-    <h1 style="text-align:center; font-size:100px;">I AM NOT</h1>
-    <div class="row">
-    {% for h in bad_habbits %}
-      <div class="col-sm-2">
-            <a href="#" class="close-thik" id="close-{{h.id}}"></a>
-            <div class="circle c4 img-circle">
-                <h4>{{h.name }}</h4>
-                <div class="crop" >
-                  <img data-toggle="myToolTip"  data-placement="top" data-html="true" data-original-title="{{h.description}}" src={{h.image.url}} width="100px" />
-                </div>
-                <p id="goodfor-{{h.id}}" style="margin:10px;">for {{h.good_for}} days</p>
-
-                <button class="cbutton cbutton--effect-ivana" style="border-color: #ffff00">
-                  <i id="habbitdone-{{h.id}}" class="cbutton__icon fa fa-thumbs-down action fa-3x{% if h.is_done_today %} done {%else%} notdone {% endif %}" aria-hidden="true" ></i>
-                </button>
-                <!-- <button type="button" class="btn btn-danger">Choose</button> -->
-            </div>
-        </div>
-		{% endfor %}
-    {%if not bad_habbits or bad_habbits|length < 5%}
-      <div class="col-sm-2">
-          <div class="circle c4 img-circle">
-              <a  data-toggle="modal" href="new?type=bad" class="add-resource action"
-        				data-target="#modal-new" title="new item" data-tooltip>
-        				<button type="button" class="btn btn-danger" >Enter a bad habbit</button>
+        				<button type="button" class="btn btn-danger" >Enter a good trait</button>
         			</a>
           </div>
     </div>
@@ -149,26 +116,34 @@
   </div>
 
   <script>
-    $(".action").click(function(){
+    $(".checkin").click(function(){
+        var id =  $(this).prop("id");
+        console.log(id);
+        var key = id.split('-')[1];
+        checkin(key);
+
+    });
+
+    $(".fa-thumbs-down").click(function(){
         var id =  $(this).prop("id");
         var key = id.split('-')[1]
         console.log(id);
         if ($(this).hasClass("done")){
-            console.log("undo");
-            undo_checkin(key);
+            console.log("undo act out");
+            undo_act_out(key);
         }
         else {
-          console.log("checkin");
-          checkin(key);
+          console.log("act_out");
+          act_out(key);
         }
         console.log(key);
     });
 
-    $(".close-thik").click(function(){
+    $(".deletegoodtrait").click(function(){
         var id =  $(this).prop("id");
         var key = id.split('-')[1]
         console.log("deleteing:" + key);
-        delete_habbit(key);
+        delete_good_trait(key);
     });
 	</script>
   <script src="{% static "vendor/bootstrap/js/bootstrap.min.js" %}"></script>

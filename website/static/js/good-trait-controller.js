@@ -1,44 +1,45 @@
 function checkin(id) {
   event.preventDefault();
   $.ajax({
-      url : "checkin/" + id,
+      url : "trait/good/checkin/" + id,
       type : "GET",
       datatype: 'json',
-      success : function(good_for) {
-        console.log(good_for);
-        $("#habbitdone-"+id).toggleClass("done");
-        $("#habbitdone-"+id).toggleClass("notdone");
-        $("#goodfor-" + id).text("for " + good_for + " days")
+      success : function(response) {
+        console.log(response.goodFor);
+        $("#goodtraitcheckin-"+id).toggleClass("done");
+        $("#goodtraitcheckin-"+id).toggleClass("notdone");
+        $("#goodfor-" + id).text("for " + response.goodFor + " days")
       },
       error : function(xhr,errmsg,err) {
-
           console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
       }
   });
 };
 
-function undo_checkin(id) {
+// function undo_checkin(id) {
+//   console.log("undo");
+//   event.preventDefault();
+//   $.ajax({
+//       url : "trait/good/undocheckin/" + id,
+//       type : "GET",
+//       datatype: 'json',
+//       success : function(good_for) {
+//         console.log(good_for);
+//         $("#goodtraitcheckin-"+id).toggleClass("done");
+//         $("#goodtraitcheckin-"+id).toggleClass("notdone");
+//         $("#goodfor-" + id).text("for " + good_for + " days")
+//       },
+//       error : function(xhr,errmsg,err) {
+//
+//           console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+//       }
+//   });
+// };
+
+function delete_good_trait(id) {
   event.preventDefault();
   $.ajax({
-      url : "undocheckin/" + id,
-      type : "GET",
-      datatype: 'json',
-      success : function(good_for) {
-        $("#habbitdone-"+id).toggleClass("done");
-        $("#habbitdone-"+id).toggleClass("notdone");
-        $("#goodfor-" + id).text("for " + good_for + " days")
-      },
-      error : function(xhr,errmsg,err) {
-
-          console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-      }
-  });
-};
-
-function delete_habbit(id) {
-  event.preventDefault();
-  $.ajax({
-      url : "delete/" + id,
+      url : "trait/good/delete/" + id,
       type : "GET",
       datatype: 'json',
       success : function(response) {
