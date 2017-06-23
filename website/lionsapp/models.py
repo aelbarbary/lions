@@ -13,6 +13,7 @@ class GoodTrait(models.Model):
         return self.name
 
    def calc_good_for(self):
+       print("id = " + str(self.id))
        checkins = GoodTraitCheckIn.objects.filter(good_trait_id=self.id).order_by('-date')
        if not checkins:
            print("no check in")
@@ -44,16 +45,11 @@ class GoodTrait(models.Model):
            return good_for
 
 
+
+
    def checkin(self):
        checkin = GoodTraitCheckIn(good_trait_id = self.id)
        checkin.save()
-    #    yesterday = datetime.today().date() - timedelta(1)
-    #    yesterday_checkin =  GoodTraitCheckIn.objects.filter(good_trait_id=self.id,  date__date = yesterday)
-    #    if yesterday_checkin:
-    #        self.good_for =  self.good_for + 1
-    #    else:
-    #        self.good_for =  1
-    #    self.save()
        good_for = self.calc_good_for()
        return good_for
 
@@ -63,12 +59,34 @@ class GoodTrait(models.Model):
        good_for = self.calc_good_for()
        return good_for
 
+
+
 class BadTrait(models.Model):
    name = models.CharField(max_length=2000)
    description = models.CharField(max_length=8000)
-   super_for = models.IntegerField(default=0)
+   sober_for = models.IntegerField(default=0)
    user = models.ForeignKey(User)
    image = models.ImageField(upload_to = "images", default = 'images/bad_trait_default.png')
+
+   def actout(self):
+       actout = BadTraitActOut(bad_trait_id = self.id)
+       actout.save()
+       sober_for = 0
+       return sober_for
+
+   def rollback_actout(self):
+       actout = BadTraitActOut.objects.filter( bad_trait_id = self.id, date__gte = datetime.today().date() )
+       actout.delete()
+       sober_for = self.calc_sober_for()
+       return sober_for
+
+   def calc_sober_for(self):
+       act_outs = BadTraitActOut.objects.filter(bad_trait_id=self.id).order_by('-date')
+       if not act_outs:
+           print("no check in")
+           return 0
+       else:
+           return 1
 
 class GoodTraitCheckIn(models.Model):
    good_trait = models.ForeignKey(GoodTrait)

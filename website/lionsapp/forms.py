@@ -12,3 +12,11 @@ class GoodTraitForm(forms.ModelForm):
         widgets = {
             'description': forms.Textarea()
         }
+
+class BadTraitForm(forms.ModelForm):
+    class Meta:
+        model = BadTrait
+        fields = ['name', 'image', 'description']
+        widgets = {
+            'description': forms.Textarea()
+        }

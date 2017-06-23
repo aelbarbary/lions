@@ -31,6 +31,7 @@
   <script src="{% static "vendor/jquery/jquery.min.js" %}"></script>
   <script src="{% static "vendor/jquery/jquery.tmpl.min.js" %}"></script>
   <script src="{% static "js/good-trait-controller.js" %}"></script>
+  <script src="{% static "js/bad-trait-controller.js" %}"></script>
   <script src="{% static "js/modernizr.custom.js" %}"></script>
 </head>
 
@@ -96,7 +97,7 @@
                 <p id="goodfor-{{t.id}}" style="margin:10px;">for {{t.good_for}} days</p>
 
                 <button class="cbutton cbutton--effect-ivana " style="border-color: #ffff00">
-                  <i id="goodtraitcheckin-{{t.id}}" class="cbutton__icon fa fa-check fa-3x action {% if t.is_done_today %} done {%else%} notdone {% endif %} checkin" aria-hidden="true" ></i>
+                  <i id="goodtraitcheckin-{{t.id}}" class="cbutton__icon fa fa-check fa-3x {% if t.is_done_today %} done {%else%} notdone {% endif %} checkin" aria-hidden="true" ></i>
                 </button>
                 <!-- <button type="button" class="btn btn-danger">Choose</button> -->
             </div>
@@ -115,6 +116,39 @@
     </div>
   </div>
 
+  <div class="jumbotron">
+    <h1 style="text-align:center; font-size:100px;">I AM NOT</h1>
+    <div class="row">
+    {% for t in bad_traits %}
+      <div class="col-sm-2">
+            <a href="#" class="close-thik deletebadtrait" id="deletegoodtrait-{{t.id}}"></a>
+            <div class="circle c4 img-circle">
+                <h4>{{t.name }}</h4>
+                <div class="crop" >
+                  <img data-toggle="myToolTip"  data-placement="top" data-html="true" data-original-title="{{t.description}}" src={{t.image.url}} width="100px" />
+                </div>
+                <p id="sober-{{t.id}}" style="margin:10px;">for {{t.sober_for}} days</p>
+
+                <button class="cbutton cbutton--effect-ivana " style="border-color: #ffff00">
+                  <i id="badtraitcheckin-{{t.id}}" class="cbutton__icon fa fa-check fa-3x  {% if t.is_done_today %} done {%else%} notdone {% endif %} actout" aria-hidden="true" ></i>
+                </button>
+                <!-- <button type="button" class="btn btn-danger">Choose</button> -->
+            </div>
+        </div>
+		{% endfor %}
+    {%if not bad_traits or bad_traits|length < 5%}
+      <div class="col-sm-2">
+          <div class="circle c4 img-circle">
+              <a  data-toggle="modal" href="trait/bad/new" class="add-resource action"
+        				data-target="#modal-new" title="new item" data-tooltip>
+        				<button type="button" class="btn btn-danger" >Enter a bad trait</button>
+        			</a>
+          </div>
+    </div>
+    {%endif%}
+    </div>
+  </div>
+
   <script>
     $(".checkin").click(function(){
         var id =  $(this).prop("id");
@@ -124,26 +158,26 @@
 
     });
 
-    $(".fa-thumbs-down").click(function(){
+    $(".actout").click(function(){
         var id =  $(this).prop("id");
-        var key = id.split('-')[1]
         console.log(id);
-        if ($(this).hasClass("done")){
-            console.log("undo act out");
-            undo_act_out(key);
-        }
-        else {
-          console.log("act_out");
-          act_out(key);
-        }
-        console.log(key);
+        var key = id.split('-')[1];
+        actout(key);
     });
+
 
     $(".deletegoodtrait").click(function(){
         var id =  $(this).prop("id");
         var key = id.split('-')[1]
         console.log("deleteing:" + key);
         delete_good_trait(key);
+    });
+
+    $(".deletebadtrait").click(function(){
+        var id =  $(this).prop("id");
+        var key = id.split('-')[1]
+        console.log("deleteing:" + key);
+        delete_bad_trait(key);
     });
 	</script>
   <script src="{% static "vendor/bootstrap/js/bootstrap.min.js" %}"></script>

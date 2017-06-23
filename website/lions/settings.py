@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'lions.wsgi.application'
 DATABASES = {
      'default': {
          'ENGINE': 'django.db.backends.postgresql',
-         'NAME': 'lions',
+         'NAME': 'lions_new',
          'HOST': os.environ['LIONS_DB_HOST'],
          'USER': os.environ['LIONS_DB_USER'],
          'PASSWORD': os.environ['LIONS_DB_PASSWORD']
