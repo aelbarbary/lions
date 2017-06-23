@@ -12,6 +12,11 @@ class GoodTraitForm(forms.ModelForm):
         widgets = {
             'description': forms.Textarea()
         }
+    def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+          self.fields['name'].label = "Trait"
+          self.fields['image'].label = "Icon"
+          self.fields['description'].label = "How to get there?"
 
 class BadTraitForm(forms.ModelForm):
     class Meta:
@@ -20,3 +25,8 @@ class BadTraitForm(forms.ModelForm):
         widgets = {
             'description': forms.Textarea()
         }
+    def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+          self.fields['name'].label = "Trait"
+          self.fields['image'].label = "Icon"
+          self.fields['description'].label = "How to quit?"

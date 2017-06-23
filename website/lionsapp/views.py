@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from .search import *
 from django.views.generic import CreateView, UpdateView
 from .models import *
 from .forms import *
