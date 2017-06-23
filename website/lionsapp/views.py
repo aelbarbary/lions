@@ -34,13 +34,13 @@ def index(request):
     for t in bad_traits:
          act_out_list = BadTraitActOut.objects.filter( bad_trait_id= t.id).order_by('-date')[:1]
          t.is_done_today = False
-         if len(act_out_list) > 0:
+         if act_out_list:
              last_act_out = act_out_list[0].date.date()
              today = datetime.today().date()
              if  last_act_out == today:
-                 h.is_done_today = True
-             h.sober_for = (today - last_act_out).days
-             print("sober for:" + str(h.super_for))
+                 t.is_done_today = True
+         t.sober_for = t.calc_sober_for(request.user.id)
+         print("sober for:" + str(t.sober_for))
     context = {
         'good_traits': good_traits,
         'bad_traits': bad_traits,
@@ -81,7 +81,7 @@ class GoodTraitCreate(CreateView):
         object.save()
         return super(GoodTraitCreate, self).form_valid(form)
     def get_success_url(self):
-        return "/"
+        return "/#good-traits"
 
 
 def delete_good_trait(request, id):
@@ -100,7 +100,7 @@ class BadTraitCreate(CreateView):
         object.save()
         return super(BadTraitCreate, self).form_valid(form)
     def get_success_url(self):
-        return "/"
+        return "/#bad-traits"
 
 def delete_bad_trait(request, id):
     print("id" + str(id))
@@ -113,10 +113,10 @@ def actout(request, id):
     bad_trait = BadTrait.objects.get(pk=id)
     if not today_actouts:
         print("new actout")
-        sober_for = bad_trait.actout()
+        sober_for = bad_trait.actout(request.user.id)
     else:
-        print("delete checkin")
-        sober_for = bad_trait.rollback_actout()
+        print("delete actout")
+        sober_for = bad_trait.rollback_actout(request.user.id)
 
     print("sober for:" + str(sober_for))
 

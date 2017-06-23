@@ -8,7 +8,7 @@ function actout(id) {
         console.log(response.soberFor);
         $("#badtraitcheckin-"+id).toggleClass("done");
         $("#badtraitcheckin-"+id).toggleClass("notdone");
-        $("#soberfor-" + id).text("for " + response.soberFor + " days")
+        $("#sober-" + id).text("for " + response.soberFor + " days")
       },
       error : function(xhr,errmsg,err) {
           console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console

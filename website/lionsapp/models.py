@@ -59,8 +59,6 @@ class GoodTrait(models.Model):
        good_for = self.calc_good_for()
        return good_for
 
-
-
 class BadTrait(models.Model):
    name = models.CharField(max_length=2000)
    description = models.CharField(max_length=8000)
@@ -68,30 +66,40 @@ class BadTrait(models.Model):
    user = models.ForeignKey(User)
    image = models.ImageField(upload_to = "images", default = 'images/bad_trait_default.png')
 
-   def actout(self):
+   def actout(self, user_id):
        actout = BadTraitActOut(bad_trait_id = self.id)
        actout.save()
-       sober_for = 0
+       sober_for = self.calc_sober_for(user_id)
        return sober_for
 
-   def rollback_actout(self):
+   def rollback_actout(self, user_id):
        actout = BadTraitActOut.objects.filter( bad_trait_id = self.id, date__gte = datetime.today().date() )
        actout.delete()
-       sober_for = self.calc_sober_for()
+       sober_for = self.calc_sober_for(user_id)
        return sober_for
 
-   def calc_sober_for(self):
+   def calc_sober_for(self, user_id):
        act_outs = BadTraitActOut.objects.filter(bad_trait_id=self.id).order_by('-date')
+       today = datetime.today().date()
        if not act_outs:
            print("no check in")
-           return 0
+
+           user = User.objects.get(pk = user_id)
+           delta = (today - user.date_joined.date() ).days
+           return delta
        else:
-           return 1
+           delta = (today - act_outs[0].date.date()).days
+           return delta
 
 class GoodTraitCheckIn(models.Model):
    good_trait = models.ForeignKey(GoodTrait)
    date = models.DateTimeField(default=timezone.now)
+   def __str__ (self):
+        return self.good_trait.name + " : " +  str(self.date)
 
 class BadTraitActOut(models.Model):
    bad_trait = models.ForeignKey(BadTrait)
    date = models.DateTimeField(default=timezone.now)
+
+   def __str__ (self):
+        return self.bad_trait.name + " : " +  str(self.date)
