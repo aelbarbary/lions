@@ -19,13 +19,13 @@ class GoodTrait(models.Model):
            print("no check in")
            return 0
 
-       yesterday = datetime.today().date()
+       yesterday = datetime.today().date() - timedelta(1)
 
        if checkins[0].date.date() < yesterday:
-        #    print("far away check ins found")
+           print("far away check ins found")
            return 0
        else:
-        #    print("start the loop" + str(len(checkins)))
+           print("start the loop" + str(len(checkins)))
            prev_date = None
            good_for = 0
            for c in checkins:
@@ -43,8 +43,6 @@ class GoodTrait(models.Model):
 
                prev_date = c.date.date()
            return good_for
-
-
 
 
    def checkin(self):

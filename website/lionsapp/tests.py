@@ -82,6 +82,14 @@ class GoodTraitTestCase(TestCase):
         good_for = good_trait.calc_good_for()
         self.assertEqual(101, good_for)
 
+    def test_good_trait_get_good_for_5(self):
+
+        good_trait = GoodTrait.objects.create(name="strong", description="desc", user_id = self.user.id)
+        GoodTraitCheckIn.objects.create(good_trait_id=good_trait.id, date = datetime.today() - timedelta(1) )
+
+        good_for = good_trait.calc_good_for()
+        self.assertEqual(1, good_for)
+
     def test_bad_trait_get_sober_for_1(self):
        bad_trait = BadTrait.objects.create(name="weak", description="desc", user_id = self.user.id)
        sober_for = bad_trait.calc_sober_for(self.user.id)
