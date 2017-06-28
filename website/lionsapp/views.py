@@ -23,21 +23,14 @@ def index(request):
     bad_traits = BadTrait.objects.filter(user_id= request.user.id).order_by('name')
 
     for t in good_traits:
-        checkins = GoodTraitCheckIn.objects.filter( good_trait_id= t.id).order_by('-date')[:1]
-        t.is_done_today = False
+        # checkins = GoodTraitCheckIn.objects.filter( good_trait_id= t.id).order_by('-date')[:1]
+        # t.is_done_today = False
         t.good_for = t.calc_good_for()
-        if len(checkins) > 0:
-            if checkins[0].date.date() == datetime.today().date():
-                print("equals")
-                t.is_done_today = True
+        t.is_done_today = t.is_checked_in_today()
+
     for t in bad_traits:
-         act_out_list = BadTraitActOut.objects.filter( bad_trait_id= t.id).order_by('-date')[:1]
-         t.is_done_today = False
-         if act_out_list:
-             last_act_out = act_out_list[0].date.date()
-             today = datetime.today().date()
-             if  last_act_out == today:
-                 t.is_done_today = True
+         
+         t.is_done_today = t.is_acted_out_today(request.user.id)
          t.sober_for = t.calc_sober_for(request.user.id)
          print("sober for:" + str(t.sober_for))
     context = {
