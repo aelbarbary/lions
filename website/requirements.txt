@@ -5,3 +5,4 @@ elasticsearch-dsl
 boto
 django-storages
 django-registration
+pytz

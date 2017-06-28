@@ -81,6 +81,9 @@ class BadTrait(models.Model):
    user = models.ForeignKey(User)
    image = models.ImageField(upload_to = "images", default = 'images/bad_trait_default.png')
 
+   def __str__ (self):
+        return self.name
+        
    def actout(self, user_id):
        actout = BadTraitActOut(bad_trait_id = self.id)
        actout.save()
