@@ -26,41 +26,29 @@ class GoodTrait(models.Model):
            return False
 
    def calc_good_for(self):
-       print("id = " + str(self.id))
-
        checkins = GoodTraitCheckIn.objects.filter(good_trait_id=self.id).order_by('-date')
        if not checkins:
-           print("no check in")
            return 0
 
        yesterday = datetime.today().date() - timedelta(1)
        last_check_in = timezone.localtime(checkins[0].date, pytz.timezone('US/Pacific'))
-       print("last check in :" + str(last_check_in))
-       print("yesterday :" + str(datetime.today() - timedelta(1)))
 
        if last_check_in.date() < yesterday:
-           print("far away check ins found")
            return 0
        else:
-           print("start the loop" + str(len(checkins)))
            prev_date = None
            good_for = 0
            for c in checkins:
                if not prev_date:
-                #    print("no prev date")
                    good_for = 1
-                #    print("good_for:" + str(good_for))
                else:
                    if (prev_date - c.date.date()).days > 1:
-                    #    print("good_for:" + str(good_for))
                        return good_for
                    else:
-                    #    print("good_for:" + str(good_for))
                        good_for = good_for + 1
 
                prev_date = c.date.date()
            return good_for
-
 
    def checkin(self):
        checkin = GoodTraitCheckIn(good_trait_id = self.id)
@@ -74,6 +62,13 @@ class GoodTrait(models.Model):
        good_for = self.calc_good_for()
        return good_for
 
+class GoodTraitCheckIn(models.Model):
+   good_trait = models.ForeignKey(GoodTrait)
+   date = models.DateTimeField(default=timezone.now)
+   def __str__ (self):
+       return self.good_trait.name + " : " +  str(timezone.localtime(self.date, pytz.timezone('US/Pacific')))
+
+
 class BadTrait(models.Model):
    name = models.CharField(max_length=2000)
    description = models.CharField(max_length=8000)
@@ -83,7 +78,7 @@ class BadTrait(models.Model):
 
    def __str__ (self):
         return self.name
-        
+
    def actout(self, user_id):
        actout = BadTraitActOut(bad_trait_id = self.id)
        actout.save()
@@ -117,16 +112,11 @@ class BadTrait(models.Model):
            delta = (today - user.date_joined.date() ).days
            return delta
        else:
-           last_act_out = DateConverter.convert_utc_to_local(act_outs[0].date)
+           last_act_out = timezone.localtime(act_outs[0].date, pytz.timezone('US/Pacific'))
            print("last_act_out:" + str(last_act_out))
            delta = (today - last_act_out.date()).days
            return delta
 
-class GoodTraitCheckIn(models.Model):
-   good_trait = models.ForeignKey(GoodTrait)
-   date = models.DateTimeField(default=timezone.now)
-   def __str__ (self):
-        return self.good_trait.name + " : " +  str(timezone.localtime(self.date, pytz.timezone('US/Pacific')))
 
 class BadTraitActOut(models.Model):
    bad_trait = models.ForeignKey(BadTrait)

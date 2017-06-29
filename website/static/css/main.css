@@ -1,6 +1,5 @@
 @charset "utf-8";
-
-	* {
+* {
 	padding:0;
 	margin:0;
 	border:0;
@@ -37,7 +36,7 @@ body {
   padding: 0;
 }
 .circle p{}
-.circle span{}
+
 .circle span.icon{
 }
 .circle span.icon i{
@@ -48,46 +47,6 @@ body {
 }
 .price-small{
   font-size: 24px
-}
-
-.c1:hover{
-  background: #39b3d7;
-  color: #ffffff;
-}
-.c1 .blue{
-  color: #39b3d7;
-}
-.c1:hover .blue{
-  color: #ffffff;
-}
-
-.c2:hover{
-  background: #gray;
-  color: #ffffff;
-}
-.c2 .yellow{
-  color: #ed9c28;
-}
-.c2:hover .yellow{
-  color: #ffffff;
-}
-
-.c3:hover{
-  background: #47a447;
-  color: #ffffff;
-}
-.c3 .green{
-  color: #47a447;
-}
-.c3:hover .green{
-  color: #ffffff;
-}
-
-.c4 .red{
-  color: #d2322d;
-}
-.c4:hover .red{
-  color: #ffffff;
 }
 
 .crop {
@@ -172,4 +131,101 @@ body {
 
 .action{
 
+}
+
+body {
+  font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  overflow-x: hidden;
+  padding-top: 110px;
+}
+
+.navbar-custom {
+  background: #2C3E50;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-transform: uppercase;
+  font-weight: 700;
+  border: none;
+}
+.navbar-custom a:focus {
+  outline: none;
+}
+.navbar-custom .navbar-brand {
+  color: white;
+}
+.navbar-custom .navbar-brand:hover,
+.navbar-custom .navbar-brand:focus,
+.navbar-custom .navbar-brand:active,
+.navbar-custom .navbar-brand.active {
+  color: white;
+}
+.navbar-custom .navbar-nav {
+  letter-spacing: 1px;
+}
+.navbar-custom .navbar-nav li a {
+  color: white;
+}
+.navbar-custom .navbar-nav li a:hover {
+  color: #18BC9C;
+  outline: none;
+}
+.navbar-custom .navbar-nav li a:focus,
+.navbar-custom .navbar-nav li a:active {
+  color: white;
+}
+.navbar-custom .navbar-nav li.active a {
+  color: white;
+  background: #18BC9C;
+}
+.navbar-custom .navbar-nav li.active a:hover,
+.navbar-custom .navbar-nav li.active a:focus,
+.navbar-custom .navbar-nav li.active a:active {
+  color: white;
+  background: #18BC9C;
+}
+.navbar-custom .navbar-toggle {
+  color: white;
+  text-transform: uppercase;
+  font-size: 10px;
+  border-color: white;
+}
+.navbar-custom .navbar-toggle:hover,
+.navbar-custom .navbar-toggle:focus {
+  background-color: #18BC9C;
+  color: white;
+  border-color: #18BC9C;
+}
+@media (min-width: 768px) {
+  .navbar-custom {
+    padding: 30px 0;
+    -webkit-transition: padding 0.3s;
+    -moz-transition: padding 0.3s;
+    transition: padding 0.3s;
+  }
+  .navbar-custom .navbar-brand {
+    font-size: 2em;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+  }
+}
+
+section {
+  padding: 50px 0;
+}
+
+@media (max-width: 767px) {
+  section {
+    padding: 75px 0;
+  }
+
+}
+
+.btn:focus,
+.btn:active,
+.btn.active {
+  outline: none;
+}
+
+.dropdown ul {
+    width: 100%;
 }
