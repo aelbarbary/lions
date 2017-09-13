@@ -53,7 +53,7 @@ class GoodTrait(models.Model):
    def checkin(self):
        checkin = GoodTraitCheckIn(good_trait_id = self.id)
        checkin.save()
-       good_for = self.calc_good_for()
+       good_for = self.good_for + 1
        return good_for
 
    def rollback_checkin(self):

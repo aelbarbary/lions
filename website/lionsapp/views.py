@@ -36,27 +36,14 @@ def index(request):
     return render(request, 'index.html', context)
 
 def checkin(request, id):
-    today_checkins =  GoodTraitCheckIn.objects.filter(good_trait_id=id,  date__gte = datetime.today().date() )
-    good_for = 0
-    good_trait = GoodTrait.objects.get(pk=id)
-    if not today_checkins:
-        print("new checkin")
-        good_for = good_trait.checkin()
-
-    else:
-        print("delete checkin")
-        good_for = good_trait.rollback_checkin()
-
-    print("good for:" + str(good_for))
-
-    return JsonResponse({ 'goodFor': good_for })
+    checkin = GoodTraitCheckIn(good_trait_id = id)
+    checkin.save()
+    return JsonResponse({  })
 
 def undo_checkin(request, id):
-    GoodTraitCheckIn.objects.filter(date__gte=datetime.today().date(), good_trait_id = id).delete()
-    good_trait = GoodTrait.objects.get(pk=id)
-    good_trait.good_for = good_trait.good_for - 1
-    good_trait.save()
-    return HttpResponse(good_trait.good_for)
+    checkin = GoodTraitCheckIn.objects.filter( good_trait_id = id, date__gte = datetime.today().date() )
+    checkin.delete()
+    return JsonResponse({  })
 
 class GoodTraitCreate(CreateView):
     model = GoodTrait

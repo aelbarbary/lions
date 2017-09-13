@@ -68,11 +68,20 @@ body {
 	margin-top: 0px;
 }
 
-.done{
+.good-done{
 	color: green;
 }
 
-.notdone{
+.bad-done{
+	color: red;
+}
+
+.good-notdone{
+	text-shadow: 1px 1px 1px #ccc;
+	color:gray;
+}
+
+.bad-notdone{
 	text-shadow: 1px 1px 1px #ccc;
 	color:gray;
 }

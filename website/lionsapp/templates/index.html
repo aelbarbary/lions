@@ -38,30 +38,22 @@
   <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom">
     <div class="container">
       <div class="navbar-header page-scroll">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
-                </button>
-        <!-- <a class="navbar-brand" href="#page-top">
-                  <img style="margin-top:-20px" src="{% static "images/favicon.png" %}">
-                </a> -->
-                <!-- <a class="navbar-brand" href="#page-top">LIONS</a> -->
-
-                <a class="navbar-brand" href="#page-top">
-                  <img  src="{% static "images/logo.png" %}" style="width:50px;" />
-                  LIONS
-                </a>
-      </div>
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                      <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+          </button>
+    <a class="navbar-brand" href="#page-top">
+            <img  src="{% static "images/logo.png" %}" style="width:50px;" />
+            LIONS
+          </a>
+  </div>
 
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
           <li class="hidden">
             <a href="#page-top"></a>
           </li>
-
           <li class="page-scroll">
-
           </li>
-
           <li class="page-scroll dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome, {{ user.get_username }} <b class="caret"></b></a>
             <ul class="dropdown-menu">
@@ -73,15 +65,12 @@
     </div>
   </nav>
 
-
   <div class="modal fade" id="modal-new" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
       </div>
     </div>
   </div>
-
-
 
   <div class="jumbotron">
     <p id="count-down" style="text-align:center"></p>
@@ -95,12 +84,11 @@
                 <div class="crop" >
                   <img data-toggle="myToolTip"  data-placement="top" data-html="true" data-original-title="{{t.description}}" src={{t.image.url}} width="100px" />
                 </div>
-                <p id="goodfor-{{t.id}}" style="margin:10px;">for {{t.good_for}} days</p>
+                <p  style="margin:10px;">for <span id="goodfor-{{t.id}}"> {{t.good_for}} </span> days</p>
 
                 <button class="cbutton cbutton--effect-ivana " style="border-color: #ffff00">
-                  <i id="goodtraitcheckin-{{t.id}}" class="cbutton__icon fa fa-check fa-3x {% if t.is_done_today %} done {%else%} notdone {% endif %} checkin" aria-hidden="true" ></i>
+                  <i id="goodtraitcheckin-{{t.id}}" class="cbutton__icon fa fa-check fa-3x {% if t.is_done_today %} good-done {%else%} good-notdone {% endif %} checkin" aria-hidden="true" ></i>
                 </button>
-                <!-- <button type="button" class="btn btn-danger">Choose</button> -->
             </div>
         </div>
 		{% endfor %}
@@ -132,9 +120,8 @@
                 <p id="sober-{{t.id}}" style="margin:10px;">for {{t.sober_for}} days</p>
 
                 <button class="cbutton cbutton--effect-ivana " style="border-color: #ffff00">
-                  <i id="badtraitcheckin-{{t.id}}" class="cbutton__icon fa fa-thumbs-down fa-3x  {% if t.is_done_today %} done {%else%} notdone {% endif %} actout" aria-hidden="true" ></i>
+                  <i id="badtraitcheckin-{{t.id}}" class="cbutton__icon fa fa-thumbs-down fa-3x  {% if t.is_done_today %} bad-done {%else%} bad-notdone {% endif %} actout" aria-hidden="true" ></i>
                 </button>
-                <!-- <button type="button" class="btn btn-danger">Choose</button> -->
             </div>
         </div>
 		{% endfor %}
